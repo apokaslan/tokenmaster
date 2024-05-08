@@ -1,65 +1,61 @@
-const { expect } = require("chai");
-
-
-function parseUnits(amount, decimals) {
-  const parsedAmount = BigInt(amount) * BigInt(10 ** decimals);
-  return parsedAmount;
-}
-
-//example
-const OCCASION_COST = parseUnits('1', 18); 
+/*const { expect } = require("chai")
 
 const NAME = "TokenMaster"
 const SYMBOL = "TM"
 
-const OCCASION_NAME ="ETH Texas"
-//const OCCASION_COST = ethers.parseUnits('1', 'ether')
+function parseUnits(amount, decimals) {
+    return BigInt(amount) * BigInt(10 ** decimals);
+  }
+  // Kullanım örneği
+const OCCASION_COST = parseUnits('1', 18);
+
+const OCCASION_NAME = "ETH Texas"
+//const OCCASION_COST = ethers.utils.parseUnits('1', 'ether')
 const OCCASION_MAX_TICKETS = 100
 const OCCASION_DATE = "Apr 27"
-const OCCASION_TIME ="10:00AM CST"
-const OCCASION_LOCATION ="Austin, Texas"
+const OCCASION_TIME = "10:00AM CST"
+const OCCASION_LOCATION = "Austin, Texas"
 
 describe("TokenMaster", () => {
   let tokenMaster
-  let deployer, buyer 
+  let deployer, buyer
 
-  beforeEach(async()=> {
-    [deployer, buyer]= await ethers.getSigners()
+  beforeEach(async () => {
+    // Setup accounts
+    [deployer, buyer] = await ethers.getSigners()
 
+    // Deploy contract
     const TokenMaster = await ethers.getContractFactory("TokenMaster")
-    tokenMaster = await TokenMaster.deploy(NAME,SYMBOL)
+    tokenMaster = await TokenMaster.deploy(NAME, SYMBOL)
 
     const transaction = await tokenMaster.connect(deployer).list(
       OCCASION_NAME,
       OCCASION_COST,
       OCCASION_MAX_TICKETS,
       OCCASION_DATE,
-      OCCASION_TIME ,
-      OCCASION_LOCATION 
+      OCCASION_TIME,
+      OCCASION_LOCATION
     )
+
     await transaction.wait()
   })
+
   describe("Deployment", () => {
-    it("Sets the name", async()=>{         
+    it("Sets the name", async () => {
       expect(await tokenMaster.name()).to.equal(NAME)
     })
-  
-    it("Sets the symbol", async()=>{    
+
+    it("Sets the symbol", async () => {
       expect(await tokenMaster.symbol()).to.equal(SYMBOL)
     })
 
-    it("Sets the owner", async()=>{ 
+    it("Sets the owner", async () => {
       expect(await tokenMaster.owner()).to.equal(deployer.address)
     })
   })
 
-  describe("Occasions", ()=> {
-
-    it('Updates occasions count', async()=>{
-      const totalOccasions = await tokenMaster.totalOccasions()
-      expect(totalOccasions).to.be.equal(1)
-    })
-    it("Returns occasions attributes", async()=>{
+  describe("Occasions", () => {
+    it('Returns occasions attributes', async () => {
       const occasion = await tokenMaster.getOccasion(1)
       expect(occasion.id).to.be.equal(1)
       expect(occasion.name).to.be.equal(OCCASION_NAME)
@@ -69,14 +65,18 @@ describe("TokenMaster", () => {
       expect(occasion.time).to.be.equal(OCCASION_TIME)
       expect(occasion.location).to.be.equal(OCCASION_LOCATION)
     })
+
+    it('Updates occasions count', async () => {
+      const totalOccasions = await tokenMaster.totalOccasions()
+      expect(totalOccasions).to.be.equal(1)
+    })
   })
 
-  
   describe("Minting", () => {
     const ID = 1
     const SEAT = 50
-    //const AMOUNT = ethers.utils.parseUnits('1', 'ether')
-    const AMOUNT = ethers.parseUnits("1", 18)
+    const AMOUNT = ethers.utils.parseUnits('1', 'ether')
+
     beforeEach(async () => {
       const transaction = await tokenMaster.connect(buyer).mint(ID, SEAT, { value: AMOUNT })
       await transaction.wait()
@@ -103,15 +103,16 @@ describe("TokenMaster", () => {
       expect(seats[0]).to.equal(SEAT)
     })
 
-    /*it('Updates the contract balance', async () => {
+    it('Updates the contract balance', async () => {
       const balance = await ethers.provider.getBalance(tokenMaster.address)
       expect(balance).to.be.equal(AMOUNT)
-    }) */
+    })
   })
+
   describe("Withdrawing", () => {
     const ID = 1
     const SEAT = 50
-    const AMOUNT = ethers.parseUnits("1",18)
+    const AMOUNT = ethers.utils.parseUnits("1", 'ether')
     let balanceBefore
 
     beforeEach(async () => {
@@ -129,11 +130,9 @@ describe("TokenMaster", () => {
       expect(balanceAfter).to.be.greaterThan(balanceBefore)
     })
 
-    /*it('Updates the contract balance', async () => {
+    it('Updates the contract balance', async () => {
       const balance = await ethers.provider.getBalance(tokenMaster.address)
       expect(balance).to.equal(0)
-    }) */
+    })
   })
-
-})
-
+}) */

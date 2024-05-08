@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
+import {ethers } from 'hardhat'
 
 // Components
 import Navigation from './components/Navigation'

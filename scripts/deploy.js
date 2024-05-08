@@ -1,7 +1,7 @@
-const hre = require("hardhat")
+const {ethers} = require("hardhat")
 
 const tokens = (n) => {
-  return ethers.utils.parseUnits(n.toString(), 'ether')
+  return ethers.parseUnits(n.toString(), 'ether')
 }
 
 async function main() {
@@ -13,9 +13,9 @@ async function main() {
   // Deploy contract
   const TokenMaster = await ethers.getContractFactory("TokenMaster")
   const tokenMaster = await TokenMaster.deploy(NAME, SYMBOL)
-  await tokenMaster.deployed()
+  // await tokenMaster.deployed()
 
-  console.log(`Deployed TokenMaster Contract at: ${tokenMaster.address}\n`)
+  console.log(`Deployed TokenMaster Contract at: ${TokenMaster.address}\n`)
 
   // List 6 events
   const occasions = [
